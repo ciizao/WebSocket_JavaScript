@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente WebSocket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #response {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cliente WebSocket</h1>
+        <button id="sendMessageButton">Enviar mensaje al servidor</button>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:8080'); // Establecemos la conexión con el servidor WebSocket
+    
+        // Cuando la conexión se establece correctamente
+        socket.onopen = () => {
+            console.log('Conexión establecida con el servidor');
+            document.getElementById('response').textContent = 'Conectado al servidor';
+        };
+    
+        // Cuando recibimos un mensaje del servidor
+        socket.onmessage = (event) => {
+            console.log('Mensaje del servidor:', event.data);
+            document.getElementById('response').textContent = 'Servidor: ' + event.data;
+        };
+    
+        // Cuando el cliente hace clic en el botón, enviamos un mensaje al servidor
+        document.getElementById('sendMessageButton').onclick = () => {
+            const message = '¡Mensaje enviado desde el cliente!';
+            console.log('Enviando mensaje al servidor:', message);
+            socket.send(message); // Enviamos el mensaje al servidor
+        };
+    </script>
+    
+</body>
+</html>
